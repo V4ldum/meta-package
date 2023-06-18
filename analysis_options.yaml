@@ -1,0 +1,11 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+linter:
+  rules:
+    lines_longer_than_80_chars: false
+
+analyzer:
+  plugins:
+    - custom_lint
+  exclude:
+    - lib/**/generated/** # Exclude all generated filed that you have no control over
