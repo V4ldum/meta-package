@@ -16,14 +16,4 @@ class BasePresenter {
       SnackBar(content: content),
     );
   }
-
-  /// Display a pop up
-  Future<void> displayPopUp({required BuildContext context, required AlertDialog dialog}) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      },
-    );
-  }
 }
