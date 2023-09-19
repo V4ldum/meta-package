@@ -22,7 +22,7 @@ class FutureWidget<T> extends StatelessWidget {
   final Widget Function(T data) success;
 
   /// The widget shown in case of error
-  final Widget Function(Object error, StackTrace stackTrace) error;
+  final Widget Function(Exception exception, StackTrace stackTrace) error;
 
   /// The widget shown while waiting for [future]
   final Widget Function() waiting;
@@ -34,7 +34,7 @@ class FutureWidget<T> extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            return error(snapshot.error!, snapshot.stackTrace!);
+            return error(snapshot.error! as Exception, snapshot.stackTrace!);
           }
           return success(snapshot.data as T);
         }
