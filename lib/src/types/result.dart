@@ -27,6 +27,11 @@ sealed class Result<S, E extends Exception> {
 
   /// Transforms a [Result]<S, E> into a [Option]<E>, mapping Err(error) into Option(error) and Ok(value) into None
   Option<E> err();
+
+  /// Dart implementation of Rust's match expression
+  /// Executes the [ok] function if the [Result] is of type [Ok],
+  /// executes the [err] function if the [Result] is of type [Err]
+  void match({required void Function(S) ok, required void Function(E) err});
 }
 
 /// Contains a success value of type [S]
@@ -69,8 +74,13 @@ final class Ok<S, E extends Exception> extends Result<S, E> {
   }
 
   @override
+  void match({required void Function(S) ok, required void Function(E) err}) {
+    ok(value);
+  }
+
+  @override
   String toString() {
-    return value.toString();
+    return 'Err($value)';
   }
 }
 
@@ -117,7 +127,12 @@ final class Err<S, E extends Exception> extends Result<S, E> {
   }
 
   @override
+  void match({required void Function(S) ok, required void Function(E) err}) {
+    err(error);
+  }
+
+  @override
   String toString() {
-    return error.toString();
+    return 'Err($error)';
   }
 }

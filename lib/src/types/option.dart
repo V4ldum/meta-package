@@ -25,6 +25,11 @@ sealed class Option<T> {
   /// Transforms an [Option]<T> into a [Result]<T, E>, mapping Some(value) to Ok(value) and None to Err(error)
   Result<T, E> okOr<E extends Exception>(E error);
 
+  /// Dart implementation of Rust's match expression
+  /// Executes the [some] function if the [Option] is of type [Some],
+  /// executes the [none] function if the [Option] is of type [None]
+  void match({required void Function(T) some, required void Function() none});
+
   /// Creates an [Option] based on the value provided : [None] if the value is null, [Some] if it is not
   static Option<T> instance<T>(T? value) {
     if (value == null) {
@@ -69,8 +74,13 @@ final class Some<T> extends Option<T> {
   }
 
   @override
+  void match({required void Function(T) some, required void Function() none}) {
+    some(value);
+  }
+
+  @override
   String toString() {
-    return value.toString();
+    return 'Ok($value)';
   }
 }
 
@@ -109,7 +119,12 @@ final class None<T> extends Option<T> {
   }
 
   @override
+  void match({required void Function(T) some, required void Function() none}) {
+    none();
+  }
+
+  @override
   String toString() {
-    return 'None';
+    return 'None()';
   }
 }
