@@ -37,6 +37,15 @@ sealed class Option<T> {
     }
     return Some(value);
   }
+
+  /// Creates an [Option] based on the value provided : [None] if the value is null, [Some] if it is not
+  /// Will cast [T] to [T2] using the provided function if the value is not null
+  static Option<T2> instanceAs<T, T2>(T? value, T2 Function(T) cast) {
+    if (value == null) {
+      return None();
+    }
+    return Some(cast(value));
+  }
 }
 
 /// Some value of type [T]
