@@ -7,6 +7,7 @@ class InitCaller extends StatefulWidget {
     super.key,
     this.child,
     this.onInit,
+    this.postFrame = false,
   });
 
   /// The widget below this widget in the tree.
@@ -14,6 +15,10 @@ class InitCaller extends StatefulWidget {
 
   /// The function to be called when the widget is initialized
   final void Function()? onInit;
+
+  /// Boolean to pass at true if you want to run [onInit] after the UI as fully built
+  /// This is useful if you have something that can trigger a rebuild inside [onInit]
+  final bool postFrame;
 
   @override
   State<InitCaller> createState() => _StartupCallerState();
@@ -24,7 +29,13 @@ class _StartupCallerState extends State<InitCaller> {
   void initState() {
     super.initState();
 
-    widget.onInit?.call();
+    if (widget.postFrame) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onInit?.call();
+      });
+    } else {
+      widget.onInit?.call();
+    }
   }
 
   @override

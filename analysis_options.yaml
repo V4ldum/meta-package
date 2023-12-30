@@ -9,3 +9,4 @@ analyzer:
     - custom_lint
   exclude:
     - lib/**/generated/** # Exclude all generated filed that you have no control over
+    - lib/**/_generated/** # Exclude all generated filed that you have no control over
